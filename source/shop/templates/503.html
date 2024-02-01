@@ -1,0 +1,55 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StickyCat Stickers</title>
+	
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap" rel="stylesheet">
+</head>
+  <style>
+    .opps{
+        font-family: 'Poppins';
+        font-weight: 800;
+        color: white;
+        font-size: 3rem;
+    }
+
+    .sub-text{
+        font-family: 'Poppins';
+        font-weight: 400;
+        color: white;
+        text-align: center;
+    }
+
+    .self-item{
+        margin-top: 14%;
+    }
+
+  </style>
+  <body style="background-color:#DC1542;">
+    <div class="container">
+        <div class="self-item">
+            <div class="d-flex justify-content-center">
+                <img src={% static 'shop/stickycatlogo.png' %} style="height: 10rem;">
+            </div>
+            <div class="d-flex justify-content-center">
+                <p class="opps text-center" >UNDER MAINTAINANCE</p>
+            </div>
+            <div class="d-flex justify-content-center">
+                <p class="sub-text">We are updating our site <br>to make your experience better with us. </p>
+            </div>
+            <div class="d-flex justify-content-center">
+                <p class="sub-text">Please check back soon</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>

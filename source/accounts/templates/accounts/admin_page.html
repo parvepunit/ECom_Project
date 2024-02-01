@@ -1,0 +1,240 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}StickycatCRM - ADMIN{% endblock title %}
+
+{% block css %}
+.scrollit {
+    overflow:scroll;
+    height:300px;
+}
+
+thead {
+    top: 0;
+    position: sticky;
+}
+
+{% endblock css %}
+
+{% block body %}
+<div class="container">
+    <div class="row d-flex justify-content-center mt-5 ">
+        <!-- order status stars here -->
+        <div class="card  mx-2 col-3 bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Total Orders</h5>
+                <p class="card-text" style="font-size: 8rem;">{{total_orders}}</p>
+            </div>
+        </div>
+        <div class="card mx-2 col-3 bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Orders Pending</h5>
+                <p class="card-text" style="font-size: 8rem;">0</p>
+            </div>
+        </div>
+        <div class="card mx-2 col-3 bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Orders Shipped</h5>
+                <p class="card-text" style="font-size: 8rem;">{{Shipped}}</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="accordion mt-4" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Search
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <form method="get">{% csrf_token %}
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label">Search By Order ID</label>
+                        <div class="input-group">
+                          <span class="input-group-text" id="basic-addon3">Order ID</span>
+                          <input type="text" name="search" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                          <button class="btn btn-outline-success" type="submit" id="button-addon2">Search</button>
+                        </div>
+                      </div>
+                </form>
+                <div class="scrollit">
+                    <table class="table col">
+                        <thead style="background-color: #d61646; color: white;">
+                            <tr>
+                                <th scope="col">Order ID</th>
+                                <th scope="col">Order Name</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-center">Customer Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in payload %}
+                            <tr>
+                                <td >{{result.order_id}}</td>
+                                <td>{{result.order_name}}</td>
+                                <td>{{result.payment_status}}</td>
+                                <td class="d-flex justify-content-center"><a href={% url 'users' result.customer_id %} class="btn btn-sm btn-primary mx-4">View</a><a href={% url 'order_status' result.order_id %} class="btn btn-sm btn-success">Recheck</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Customers
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                 <!-- customer table starts here -->
+                    <div class="scrollit">
+                        <table class="table col">
+                            <thead style="background-color: #d61646; color: white;">
+                                <tr>
+                                    <th scope="col">F.Name</th>
+                                    <th scope="col">L.Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Contact</th>
+                                    <th scope="col">Actions</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                </tr>
+                                {% for customer in customers %}
+                                <tr>
+                                    <td>{{customer.first_name}}</td>
+                                    <td>{{customer.last_name}}</td>
+                                    <td>{{customer.email}}</td>
+                                    <td>{{customer.phone_no}}</td>
+                                    <td><a href="{% url 'users' customer.id %}" class="btn btn-sm btn-primary">View</a></td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Orders
+              </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <!-- order table starts here -->
+                    <div class="scrollit">
+                        <table class="table col">
+                            <thead style="background-color: #692b8f; color: white;">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col" class="col-3">Date</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>{{order.order_id}}</td>
+                                    <td>{{order.date_created|date:'d-m-Y' }}</td>
+                                    <td>{{order.customer}}</td>
+                                    <td>{{order.order_status}}</td>
+                                    <td><form method="POST"><a href="" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop{{order.order_id}}" onclick="popu('{{order.order_id}}')">View</a></td></form>
+                                    <td></td>
+                                </tr>
+                                <!-- modal starts here -->
+                                <form method="post">{% csrf_token %}
+                                    <div class="modal fade " id="staticBackdrop{{order.order_id}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{order.order_id}}</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="list-group mx-2">
+                                                        <div class="row">
+                                                        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                                                        <strong >Order Id : </strong> {{order.order_id}}
+                                                        </a>
+                                                        </div>
+                                                        <div class="row">
+                                                            <a href="#" class="list-group-item list-group-item-action col">Customer Name : {{order.order_name}}</a>
+                                                            <a href="#" class="list-group-item list-group-item-action col">Phone Number : {{order.order_phone}}</a>
+                                                        </div>
+                                                        <div class="row">
+                                                            <a href="#" class="list-group-item list-group-item-action col">Order Date : {{order.date_created}}</a>
+                                                            <a href="#" class="list-group-item list-group-item-action col">Order Amount : {{order.order_amount}}</a>
+                                                        </div>
+                                                        <div class="row">
+                                                            <a href="#" class="list-group-item list-group-item-action col">Address : {{order.order_address}}</a>
+                                                        </div>
+                                                        <div class="row">
+                                                            <select class="form-select col" aria-label="Default select example" name="order_status" value="{{order.order_status}}">
+                                                                <option>Status</option>
+                                                                <option value="In Process">In - Process </option>
+                                                                <option value="Shipped">Shipped</option>
+                                                                <option value="Deliverd">Delivered</option> 
+                                                            </select>
+                                                            
+                                                            <input type="hidden" name="order_id" value="{{order.order_id}}">
+                                                            <input type="text" class="form-control col" placeholder="Tracking ID" name="tracking_id" value="{{order.order_trackingId}}">
+                                                        </div>
+                                                    </div>
+                                                    <div id="ites{{order.order_id}}">
+                                                        <p id="cart_items{{order.order_id}}">{{order.order_details}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- customer table starts here -->
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+{% block js %}
+<script src="{%static 'members/javascript/'%}"></script>
+<script src="{%static 'accounts/javascript/admin.js'%}"></script>
+{% endblock js %}
+
+
+{% endblock %}

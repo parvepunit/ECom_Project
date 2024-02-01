@@ -1,0 +1,143 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}StickycatCRM - {{customer.first_name}}{% endblock title %}
+
+{% block css %}
+
+
+{% endblock css %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row my-2 d-flex justify-content-center">
+        <!-- xl size order status counter -->
+        <div class="col d-none d-lg-block mx-1">
+            <div class="row">
+                <div class="card col mx-1 bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total <br> Orders</h5>
+                        <p class="card-text" style="font-size: 8rem;">{{total_orders}}</p>
+                    </div>
+                </div>
+                <div class="col card mx-1 bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Orders Pending</h5>
+                        <p class="card-text" style="font-size: 8rem;">0</p>
+                    </div>
+                </div>
+                <div class="col card mx-1 bg-info">
+                    <div class="card-body">
+                        <h5 class="card-title">Orders Shipped</h5>
+                        <p class="card-text" style="font-size: 8rem;">{{shipped}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- sm size order status counter -->
+        <div class="row d-xs-block d-lg-none">
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item d-flex justify-content-between text-white align-items-start bg-success">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Total Orders</div>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{total_orders}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between bg-warning align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Orders Pending</div>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">0</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between bg-info align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">Orders Shipped</div>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{shipped}}</span>
+                </li>
+            </ol>
+        </div>
+        <!-- customer details card -->
+        <div class="card col my-2" style="width: 18rem;">
+            <div class="card-header">
+                <h5>Customer Details</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Full Name : {{customer.first_name}}_{{customer.last_name}}</li>
+                <li class="list-group-item">Email : {{customer.email}}</li>
+                <li class="list-group-item">Mobile : {{customer.phone_no}}</li>
+                <li class="list-group-item">Address : </li>
+            </ul>
+        </div>
+    <div>
+        <form method="get" class="form-control mt-2">{% csrf_token %}
+            <div class="">
+                {{myFilter.form}}
+                <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            </div>
+        </form>
+    </div>
+    </div>
+    <!-- order table starts here -->
+    <table class="table col mt-2">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Order Id</th>
+                <th scope="col" class="col-2">Date</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{order.order_id}}</td>
+                <td>{{order.date_created|date:'d-m-Y' }}</td>
+                <td>{{order.order_amount}}</td>
+                <td>{{order.order_status}}</td>
+                <td><a href="" class="btn m-1 btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop{{order.order_id}}" onclick="popu('{{order.order_id}}')">View Cart</a>
+                    <a href="#" class="btn m-1 btn-danger" onclick="del('{{order.order_id}}')">Delete</a>
+                </td>
+            </tr>
+            <!-- modal for each order starts here -->
+            <div class="modal fade " id="staticBackdrop{{order.order_id}}" data-bs-backdrop="static"
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Cart - OrderID : {{order.order_id}}
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="ites{{order.order_id}}">
+                            <p id="cart_items{{order.order_id}}">{{order.order_details}}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+
+
+
+
+
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<script src="{%static 'accounts/javascript/user.js'%}"></script>
+{% endblock js %}
+
+
+{% endblock %}

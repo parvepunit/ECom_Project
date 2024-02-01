@@ -1,0 +1,193 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'accounts/css/invoice.css'%}">
+</head>
+
+<body>
+    <!-- <div class="container-fluid text-center">
+    <div class="row ">
+        <div class="col-8 bg-success">
+            1 of 2
+        </div>
+        <div class="col bg-primary">
+            2 of 2
+        </div>
+    </div>
+    <div class="row bg-danger">
+        <div class="col">
+            1 of 3
+        </div>
+        <div class="col">
+            2 of 3
+        </div>
+        <div class="col">
+            3 of 3
+        </div>
+    </div>
+</div> -->
+    <div>
+        <div class="row ">
+            <div class="col-8 ">
+                <img src="/media/adarshlogo.png" class="img-fluid" alt="...">
+                <img src="/media/stickycatlogo.png" class="img-fluid" alt="...">
+            </div>
+            <div class="col d-flex align-items-center" id="tax">
+                TAX INVOICE
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4 fs">
+                Billed By :- <br>
+                <b> Name </b> : Adarsh Offset <br>
+                <b> Address </b> : Shop No.2, C.P.A. Building, E-5, Arera Colony, Bhopal (M.P.) - 462016 <br>
+                <b> Mobile </b> : 9425008755 <br>
+                <b>Email </b> : adarshoffset.bhopal@gmail.com <br>
+                <b>GSTIN </b> : 23CZOPP8555Q1Z8 <br>
+
+            </div>
+            <div class="col-4 fs">
+                Billed To :- <br>
+                <b> Name </b> : {{order.order_name}}<br>
+                <b> Address </b> : {{order.order_address}}<br>
+                <b> Mobile </b> : {{order.order_phone}} <br>
+                <b>Email </b> : <br>
+            </div>
+            <div class="col-4 fs">
+                <b> Order No : </b>{{order.order_id}}<br>
+                <b> Order Date : </b>{{order.date_created}}<br>
+                <b> Tracking Id : </b>{{order.order_trackingId}}<br>
+                <b> Place of Supply : </b> {{delivery_state}}<br>
+
+
+            </div>
+        </div>
+        <div class="row container-fluid" style="margin-top: 5px;">
+            <table class="table table-bordered border-dark">
+                <thead style="text-align: center;">
+                    <tr>
+                        <th class="col" style="width:1%">S.no.</th>
+                        <th class="col-4">Item Description</th>
+                        <th class="col">HSN</th>
+                        <th class="col">Unit Price</th>
+                        <th class="col">Rate</th>
+                        <th class="col">GST Type</th>
+                        <th class="col-2">{{tax_type}}</th>
+                        <th class="col-2">Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, order_item in cart.items %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <b>Size : </b>{{order_item.3}}<br>
+                                <b>Type :</b>{{order_item.0}}<br>
+                                <b>Material :</b>{{order_item.1}}<br>
+                                <b>Shape :</b>{{order_item.2}}<br>
+                                <b>Qty :</b>{{order_item.6}}<br>
+                                
+                            </td>
+                            <td>4532111060</td>
+                            <td>{{order_item.9}}/-</td>
+                            <td>18%</td>
+                            <td>{{tax_type}}</td>
+                            <td>&#8377; {{order_item.8}}/-</td>
+                            <td>&#8377; {{order_item.7}}/-</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th colspan="6" style="text-align: end;">Delivery Charge </th>
+                        <td>N/A</td>
+                        <td>&#8377; 70/-</td>
+                    </tr>
+                    <tr>
+                        <th colspan="6" style="text-align: end;">Sub Total</th>
+                        <td>&#8377; {{gstSubotal}}/-</td>
+                        <td>&#8377; {{subTotalCst}}/-</td>
+                    </tr>
+                    <tr>
+                        <th colspan="6" style="text-align: end;">Round Off </th>
+                        <td>&#8377; (-){{roundOff}}</td>
+                        <td>&#8377; (-){{roundOff}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="6" style="text-align: end;">TOTAL</th>
+
+                        <td>&#8377; {{gstTotal}}/-</td>
+                        <td>&#8377; {{totalCst}}/-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row container-fluid d-flex justify-content-center">
+            
+            {% comment %} <div class="col-8">
+                <span><b> TAX SUMMARY</b></span>
+                <table class="table table-bordered border-dark" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tax Type</th>
+                            <th scope="col">Tax Rate</th>
+                            <th scope="col">Total Amount</th>
+                            <th scope="col">Tax Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SGST</td>
+                            <td>9%</td>
+                            <td>1800</td>
+                            <td>162</td>
+                        </tr>
+                        <tr>
+                            <td>CGST</td>
+                            <td>9%</td>
+                            <td>1800</td>
+                            <td>162</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align: end;"><b>TOTAL</b></td>
+                            <td>{{order.order_amount}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div> {% endcomment %}
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="fs">
+                    <b>Terms and Conditions </b> :- <br>
+                    1) Goods once sold will not be taken back or money refunded. <br>
+                    2) If Damaged product recived please contact on website. <br>
+                    3) Subjected to Bhopal Jurisdiction. <br>
+                    4)Errors and omissions excepted. <br>
+                </div>
+            </div>
+            <div class="col-4" style="text-align: end;">
+                <div class="fs">
+                    <b>Authorized Signatory</b> :- <br>
+                    <br>
+                    <br>
+                    <br>
+                    Seal & Signature<br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

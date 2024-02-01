@@ -1,0 +1,83 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}Stickycat - Orders{{customer.first_name}}{% endblock title %}
+
+{% block css %}
+
+
+{% endblock css %}
+
+{% block body %}
+<div class="container mt-3">
+    <div class="container mt-3 d-flex justify-content-center">
+        <div class="card col-10 shadow-lg mb-5 bg-body rounded">
+            <h5 class="card-header">Orders </h5>
+            <div class="card-body">
+                <p class="card-text">
+                <table class="table">
+                    <thead style="background-color: #d61646; color: white;">
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Order Id</th>
+                            <th scope="col">Current Status</th>
+                            <th scope="col" class="col-3">Tracking Id</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Cart</th>
+                            <th scope="col">Invoice</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{order.date_created|date:'d-m-Y'}}</td>
+                            <td>{{order.order_id}}</td>
+                            <td>{{order.order_status}}</td>
+                            <td>{{order.order_trackingId}}</td>
+                            <td>Rs. {{order.order_amount}} /-</td>
+                            <td><button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop{{order.order_id}}" onclick="popu('{{order.order_id}}')"> View </button></td>
+                                <td><a href="{% url 'invoice' order.order_id %}" class="btn btn-success btn-sm click"> Invoice</a>  
+                            
+                        </tr>
+                        <!-- modal for each order starts here -->
+                        <div class="modal fade" id="staticBackdrop{{order.order_id}}" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Cart - OrderID :
+                                            {{order.order_id}}
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="ites{{order.order_id}}">
+                                        <p id="cart_items{{order.order_id}}">{{order.order_details}}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+<script src="{%static 'accounts/javascript/user_orders.js'%}"></script>
+{% endblock js %}
+
+
+{% endblock %}

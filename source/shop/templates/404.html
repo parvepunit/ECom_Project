@@ -1,0 +1,53 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block css %}
+.cnt{
+    padding-top: 200px;
+    padding-bottom: 200px;
+
+}
+{% endblock css %}
+
+{% block body %}
+{% load static %}
+
+<div class="container cnt mt-3">
+    <div class="container mt-3 d-flex justify-content-center">
+        <div class="card col-8 shadow-lg mb-5 bg-body rounded">
+            <div class="card-body d-flex justify-content-center">
+                <div class="card-text ">
+                    <div class="row ">
+                        <div class="col ">
+                            <img src="/media/shop/images/stickycatlogo.png" alt="stickers" height="170rem">
+                        </div>
+                        <div class="col ">
+                            <div class="row">
+                                <h1 class="col" style="color: #DC1542;">ERROR 404</h1>
+                            </div>
+                            <div class="row">
+                                    <p class="col-8">It looks like you have reached an address which does not exist,
+                                        Use the navbar above to find your way to our amazing website.
+                                    </p>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% block js %}
+    <script src=""></script>
+{% endblock js %}
+
+
+{% endblock %}

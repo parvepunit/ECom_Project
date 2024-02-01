@@ -1,0 +1,22 @@
+img{
+    width: 10rem;
+}
+
+#tax {
+    color: #dc1541;
+    font-size: 2rem;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.fs{
+    font-size: 10pt;
+}
+
+table, thead{
+    border: .12rem solid;
+}
+
+thead{
+    background-color: #dc1541;
+}

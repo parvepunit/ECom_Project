@@ -1,0 +1,54 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}Stickycat - Register{% endblock title %}
+
+{% block css %}
+body {
+    
+    background-image: url("{% static 'shop/bg-image.jpg' %}");
+    background-size: cover;
+
+   }
+{% endblock css %}
+
+{% block body %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+{% if form.errors %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{form.errors}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card mb-5 bg-body-tertiary rounded " style="width: 30rem;">
+        <div class="card-body mt-2">
+            <div class="card-header">
+                <h5 class="card-title">Register</h5>
+            </div>
+            <div class="container mt-3">
+                <form method="post" action="{% url 'register' %}">{% csrf_token %}
+                    {{form.as_p}}
+                       <br> 
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block js %}
+<script src="{%static 'members/javascript/'%}"></script>
+{% endblock js %}
+
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}Stickycat - Profile{% endblock title %}
+
+{% block css %}
+
+
+{% endblock css %}
+
+{% block body %}
+<div class="container mt-3 d-flex justify-content-center">
+  <div class="card col-10 shadow-lg p-3 mb-5 bg-body rounded">
+    <h5 class="card-header">Personal Details</h5>
+    <div class="card-body">
+      <p class="card-text">
+      <form method="POST" action="" class="row g-3" enctype="multipart/form-data">{% csrf_token %}
+        <div class="col-md-6">
+          <label for="inputFirstName" class="form-label">First Name</label>
+          {{form.first_name}}
+        </div>
+        <div class="col-md-6">
+          <label for="inputlastName" class="form-label">Last Name</label>
+          {{form.last_name}}
+        </div>
+        <!-- <div class="col-md-6" >
+          <label for="inputEmail4" class="form-label">Email</label>
+          {{form.email}}
+          <span style="font-size: small; color: green;">Email ID cannot be changed</span>
+        </div> -->
+        
+        <div class="col-12">
+          <label for="inputAddress" class="form-label">Address Line 1</label>
+          {{address.address1}}
+        </div>
+        <div class="col-6">
+          <label for="inputAddress2" class="form-label">Address Line 2</label>
+          {{address.address2}}
+        </div>
+        <div class="col-md-6">
+          <label for="inputPhoneNo" class="form-label">Phone</label>
+          {{form.phone_no}}
+        </div>
+        <div class="col-md-6">
+          <label for="inputCity" class="form-label">City</label>
+          {{address.city}}
+        </div>
+        <div class="col-md-4">
+          <label for="inputState" class="form-label">State</label>
+          {{address.State}}
+        </div>
+        <div class="col-md-2">
+          <label for="inputZip" class="form-label">Zip</label>
+          {{address.zip}}
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+  crossorigin="anonymous"></script>
+<script src="{%static 'accounts/javascript'%}""></script>
+{% endblock js %}
+
+
+{% endblock body %}

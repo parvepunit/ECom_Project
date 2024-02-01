@@ -1,0 +1,55 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}Stickycat - Login{% endblock title %}
+
+{% block css %}
+body {
+    
+    background-image: url("{% static 'shop/bg-image.jpg' %}");
+    background-size: cover;
+
+   }
+{% endblock css %}
+
+{% block body %}
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card mb-5 bg-body-tertiary rounded " style="width: 25rem;">
+        <div class="card-body mt-2">
+            <div class="card-header">
+                <h5 class="card-title">Login</h5>
+            </div>
+            <div class="container mt-3">
+                <form method="post">{% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="text" class="form-control" name="email" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password">
+                     </div>
+                    <button type="submit" class="btn btn-primary">Submit</button><br><br><br>
+                </form>
+                <div class="card-footer text-muted d-flex justify-content-center">
+                    Dont Have an Account.? <a href="{% url 'register'%}"> Register Here</a>
+
+                </div> 
+                <div class="card-footer text-muted d-flex justify-content-center">
+   
+                    Forgotten Password.? <a href="{% url 'password_reset'%}"> Reset Password Here</a>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block js %}
+<script src="{%static 'members/javascript/'%}"></script>
+{% endblock js %}
+
+
+{% endblock %}

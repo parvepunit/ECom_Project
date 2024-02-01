@@ -1,0 +1,319 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %}Stickycat{% endblock %}
+
+{% block css %}
+.card-header{
+background-color:white;
+}
+
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active{
+background-color : white;
+color:#DC1542;
+}
+
+.btn-outline-dark{
+--bs-btn-border-color:white;
+--bs-btn-active-border-color: #DC1542;
+}
+.accordion-button:focus{
+box-shadow:none;
+}
+.accordion-button:not(.collapsed){
+color:#DC1542;
+background-color: #ffd1dc;
+}
+
+
+
+{% endblock %}
+
+{% block body %}
+{% load static %}
+
+
+
+<!-- picture slidshow starts here -->
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" >
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="/media/shop/images/banner1.png" class="d-block w-100" alt="...">
+      </div>
+#      <div class="carousel-item">
+#        <img src="https://source.unsplash.com/random/1020x300/?sticker" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="https://source.unsplash.com/random/1020x300/?product label" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <!-- picture slideshow ends here -->
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <!-- this is Upload section -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                             Step 1: Upload Your Design.
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                        data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div class="mb-3">
+                                <form action="" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                                    <label for="fileupload" class="form-label">
+                                        <h6>Upload a file</h6>
+                                    </label><br>
+                                    <input class="form-control" type="file" id="fileupload" name="designUpload">
+                                    <span>Preffered file formats : .png, .jpg, .pdf, .eps, .cdr, .ai</span> <br>
+                                    {% if name %}
+                                    Uploaded File : <a href="media/user_upload/{{name}}">Open</a> <br>
+                                    {% endif %}
+                                    <button type="submit" class="btn btn-primary mt-3" id="upload_btn">Upload</button>
+                                    <br>
+                                    <span style="font-size: x-small;">Note: Print quality depends on the quality of
+                                        artwork uploaded.</span> <br>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- this is Sticket type Section -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Step 2 : Select Type Of Sticker
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                        data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body row" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" >
+                            <input type="radio" class="btn-check" name="type" id="fullcut" autocomplete="off"
+                                onchange="stickertype('fc')">
+                            <label class="btn btn-outline-dark" for="fullcut" style="width: 10rem;">
+                                <img src="/media/shop/images/fullcut.png" height="80rem"><br>
+                                <h6>Full Cut</h6>
+                            </label>
+                            <input type="radio" class="btn-check" name="type" id="halfcut" autocomplete="off"
+                                onchange="stickertype('hc')">
+                            <label class="btn btn-outline-dark" for="halfcut" style="width: 10rem;">
+                                <img src="/media/shop/images/halfcut.png" height="80rem"><br>
+                                <h6>Half Cut</h6>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- this is sticker material section  -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                aria-controls="flush-collapseThree">
+                                Step 3 : Select Sticker Material.
+                            </button>
+                        </h2>
+                        <div id="flush-collapseThree" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" >
+                                <div>
+                                    <input type="radio" class="btn-check" name="material" id="normal_mat"
+                                        autocomplete="off" onclick="stickertype('normalwhite')">
+                                    <label class="btn btn-outline-dark" for="normal_mat" style="width: 10rem;">
+                                        <img src="/media/shop/images/petwhite.png" height="80rem"><br>
+                                        <h6>Normal (White)</h6>
+                                        <span style="font-size: small;">Paper sticker <br> 90/90 Ivory
+                                            Sheet</span></span>
+                                    </label>
+                                    <input type="radio" class="btn-check" name="material" id="pettrans_mat"
+                                        autocomplete="off" onclick="stickertype('pettrans')">
+                                    <label class="btn btn-outline-dark" for="pettrans_mat" style="width: 10rem;">
+                                        <img src="/media/shop/images/pettrans.png" height="80rem"><br>
+                                        <h6>PET (Transparent)</h6>
+                                        <span style="font-size: small;">Plastic Transparent <br> Non Tearable</span>
+                                    </label>
+                                    <input type="radio" class="btn-check" name="material" id="petwhite_mat"
+                                        autocomplete="off" onclick="stickertype('petwhite')">
+                                    <label class="btn btn-outline-dark" for="petwhite_mat" style="width: 10rem;">
+                                        <img src="/media/shop/images/petwhite.png" height="80rem"><br>
+                                        <h6>PET (white)</h6>
+                                        <span style="font-size: small;">Plastic White <br> Non Tearable</span>
+                                    </label>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- this is sticker shape section  -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseFour" aria-expanded="false"
+                                aria-controls="flush-collapseFour">
+                                Step 4 : Select Shape of Your Sticker.
+                            </button>
+                        </h2>
+                        <div id="flush-collapseFour" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" >
+                                <div>
+                                    <input type="radio" class="btn-check" name="shape" id="customcut" autocomplete="off"
+                                        onchange="stickertype('custom')">
+                                    <label class="btn btn-outline-dark" for="customcut" style="width: 10rem;">
+                                        <img src="/media/shop/images/customshape.png" height="50rem"><br>
+                                        <h6>Custom</h6>
+                                    </label>
+                                    <input type="radio" class="btn-check" name="shape" id="circlecut" autocomplete="off"
+                                        onchange="stickertype('circle')">
+                                    <label class="btn btn-outline-dark" for="circlecut" style="width: 10rem;">
+                                        <img src="/media/shop/images/circleshape.png" height="50rem"><br>
+                                        <h6>Circle</h6>
+                                    </label>
+                                    <input type="radio" class="btn-check" name="shape" id="ovalcut" autocomplete="off"
+                                        onchange="stickertype('oval')">
+                                    <label class="btn btn-outline-dark" for="ovalcut" style="width: 10rem;">
+                                        <img src="/media/shop/images/ovalshape.png" height="50rem"><br>
+                                        <h6>Oval</h6>
+                                    </label>
+                                    <input type="radio" class="btn-check" name="shape" id="squarecut" autocomplete="off"
+                                        onchange="stickertype('square')">
+                                    <label class="btn btn-outline-dark" for="squarecut" style="width: 10rem;">
+                                        <img src="/media/shop/images/squareshape.png" height="50rem"><br>
+                                        <h6>Square</h6>
+                                    </label>
+                                    <input type="radio" class="btn-check" name="shape" id="rectanglecut"
+                                        autocomplete="off" onchange="stickertype('rectangle')">
+                                    <label class="btn btn-outline-dark" for="rectanglecut" style="width: 10rem;">
+                                        <img src="/media/shop/images/rectangleshape.png" height="50rem"><br>
+                                        <h6>Rectangle</h6>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- this is size and quantity section -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingFive">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseFive" aria-expanded="false"
+                                aria-controls="flush-collapseFive">
+                                Step 5: Select Size and Quantiy.
+                            </button>
+                        </h2>
+                        <div id="flush-collapseFive" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <div>
+                                    <h6>Please Select Size</h6>
+                                    <span style="font-size: small;">Actual size may differ by +/- 2 mm.</span>
+                                    <select class="form-select form-select-md mb-3" onchange='quantity(this)'
+                                        aria-label=".form-select-lg example" id="size_options">
+                                    </select>
+
+                                </div>
+                                <div>
+                                    <h6>Please Select Quantity</h6>
+                                    <select class="form-select form-select-md mb-3" id="qty_options"
+                                        aria-label=".form-select-lg example"></select>
+                                    <span style="font-size: small;">One Sheet Dimmension : 12 inch X 18 inch.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- this is user selected sticker status section  -->
+        <div class="card border-danger col-xs-10 col-md-4 text-center shadow p-3 bg-body-tertiary mb-5 rounded"
+            style="height: fit-content; width: 18rem;">
+            <div class="card-header text-danger">
+                <h5> STICKER SPECIFICATIONS </h5>
+            </div>
+            <div class="card-body">
+                {% if name %}
+                <img src="/media/user_upload/{{name}}" alt="File Uploaded : {{name}}" class="img-thumbnail"
+                    height="15rem" id="image_loaded" alt="Cannot load this file format">
+                {% else %}
+                <img src="/media/shop/images/stickycatlogo.png" class="img-thumbnail" height="15rem" id="image_loaded"
+                    alt="Cannot load this file format">
+                {% endif %}
+                <div class="col">
+                    <p class="card-text">
+                        <strong>Type :</strong><span id="sticktype"></span><br>
+                        <strong>Material :</strong><span id="stickmaterial"></span><br>
+                        <strong>Shape : </strong><span id="stickshape"></span><br>
+                        <strong>Size : </strong><span id="sitcksize"></span><br>
+                        <strong>Qty : </strong><span id="stickqty"></span><br>
+                        <strong>Cost : </strong>Rs. <span id="stickcost"></span><br>
+                    </p>
+                </div>
+                
+                <a href="/" class="btn btn-primary cart" onclick="addcart()">Add to cart</a>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" data-bs-autohide="false">
+    <div id="liveToast" data-bs-autohide="false" class="toast bg-secondary-subtle" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto" style="color: #d61646;">StickyCat Stickers</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Hey is your Design ready..?
+            <div class="mt-2 pt-2 border-top">
+                <button type="button" class="btn btn-primary btn-sm" onclick="toast2()" data-bs-dismiss="toast">No</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" >
+    <div id="liveToast1" data-bs-autohide="false" class="toast bg-secondary-subtle" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto" style="color: #d61646;">StickyCat Stickers</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <strong> Contact For Design Related Queries </strong><br>
+            Email : adarshoffset.bhopal@gmail.com<br>
+            Whatsapp No. : +91 9425008755
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+<script src="{%static 'shop/javascript/homenew.js'%}"></script>
+<script>
+    const toastLiveExample = document.getElementById('liveToast');
+    window.onload = () => {
+        const toast = new bootstrap.Toast(toastLiveExample);
+        toast.show()
+    }
+</script>
+{% endblock js %}
+
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}Stickycat - Tracking{{customer.first_name}}{% endblock title %}
+
+{% block css %}
+.form-check-input:checked {
+    background-color: #DC1542;
+    border-color: #DC1542;
+}
+
+{% endblock css %}
+
+{% block body %}
+<div class="container mt-3">
+    <div class="d-flex justify-content-center">
+        <div class="card col-10 shadow-lg mb-2 bg-body">
+            <div class="card-body">
+                <div class="card-text">
+                    <form method="post">{% csrf_token %}
+                        <label for="exampleDataList" class="form-label">Select search criterial to search</label>
+                            
+                            <div class="container">
+                                <div class="row">
+                                    <div class="form-check col-6 col-md-2">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="awb" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                        AWB No.
+                                        </label>
+                                    </div>
+                                    <div class="form-check col">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="id">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                        Order Id
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="input-group my-3">
+                            <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                            <input type="text" name="awb" class="form-control" placeholder="Enter AWB No. or Order Id to search" >
+                            <button class="btn" style="background-color: #DC1542; color: white; " type='submit' method="post" id="button-addon2">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mt-3">
+        <div class="d-flex justify-content-center">
+            <div class="card col-10 shadow-lg mb-5 bg-body rounded">
+                <div class="card-body">
+                    <div class="card-text">
+                        <h2 class='text-center' style="color:#DC1542;">Status: {{status.current_status}}</h2>
+                        <hr>
+                        <div class="row m-2">
+                            <ul class="list-group list-group-flush col-md-6">
+                                <li class="list-group-item">Order Id : </li>
+                                <li class="list-group-item">AWB Code : {{status.awb_code}}</li>
+                                <li class="list-group-item">Pickup Date : {{status.pickup_date}}</li>
+                                <li class="list-group-item">Delivery Date : {{status.delivered_date}}</li>
+                            </ul>
+                            <ul class="list-group list-group-flush col-md-6">
+                                <li class="list-group-item">Order Name : </li>
+                                <li class="list-group-item">Courier Name : {{status.courier_name}}</li>
+                                <li class="list-group-item">Origin : {{status.origin}}</li>
+                                <li class="list-group-item">Destination : {{status.destination}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for activity in history %}
+            <div class="d-flex justify-content-center">
+                <div class="card col-10 shadow-lg mb-2 bg-body rounded border-danger ">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <h4 class=''>Date : {{activity.date|slice:10}} Time : {{activity.date|slice:"10:"}}  </h4>
+                            <hr>
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item">Status: {{activity.activity}}</li>
+                                    <li class="list-group-item">Last Location : {{activity.location}}</li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+<script src="{%static 'accounts/javascript/user_orders.js'%}"></script>
+{% endblock js %}
+
+
+{% endblock %}

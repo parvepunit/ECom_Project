@@ -1,0 +1,207 @@
+{% extends 'shop/basic.html' %}
+{% load static %}
+
+{% block title %}Stickycat - Payment{% endblock title %}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+{% block css %}
+#stat {
+    font-family: 'Poppins', sans-serif;
+    font-size: x-large;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+
+
+
+
+polyline{
+    position: absolute;
+    stroke: white;
+    display: grid;
+    place-items: center;
+    transform: translate(10%,8%);
+}
+
+
+circle {
+    position: absolute;
+    stroke-dasharray: 1000;
+    animation: stroke 2s ease-out forwards,
+                fill-circle 1s ease .75s forwards;
+    
+    fill-opacity: 0;
+}
+
+.cross{
+    position: absolute;
+    stroke: white;
+    display: grid;
+    place-items: center;
+    transform: translate(10%,8%);
+}
+
+
+@keyframes stroke {
+    from{
+        stroke-dashoffset: 1000;
+        
+    }
+
+    to {
+        stroke-dashoffset: 0;
+        
+    }
+}
+
+@keyframes fill-circle {
+    from{
+        fill-opacity: 0;
+    }
+
+    to {
+        fill-opacity: 1;
+    }
+}
+
+
+{% endblock css %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center" >
+        <div class="card shadow-lg my-5 p-3 bg-body rounded">
+            {% if final_dict.status == 'PAYMENT_SUCCESS' %}
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <!-- <image src="https://giphy.com/embed/YlSR3n9yZrxfgVzagm" width="100" height="100"></image> -->
+                        {% comment %} <img src="{%static 'shop/success.jpg'%}" style="height:10rem;"> {% endcomment %}
+                        <svg height="160" width="160">
+                            <circle class="circle" cx="80" cy="80" r="75"  fill="#6fbb3f" stroke="#6fbb3f" stroke-width="10"/>
+                            <polyline fill="none" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+                        </svg>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <p id='stat' style="color: #6fbb3f;">PAYMENT SUCCESSFUL</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-center">
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <p class="card-text ">
+                            
+                            <div>
+                                <p>Transaction Id : {{final_dict.transaction_id}}</p>
+                                <p>Order Id : {{final_dict.order_id}}</p>
+                                <p>Payment Mode : {{final_dict.type}}</p>
+                                <p>Amount Paid : Rs. {{final_dict.amount}} /- </p>
+                            </div>
+                        </p>
+                    </div>
+                    <hr>
+                        <div class="d-flex justify-content-center">
+                            <a href="{% url 'invoice' final_dict.order_id %}" class='btn btn-success' >View Invoice</a>
+                        </div>
+                </div>
+            {% elif final_dict.status == 'PAYMENT_PENDING'%}
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <img src="{%static 'shop/pending.png'%}" style="height:8rem;">
+                    </div>
+                    <div class="d-flex justify-content-center mt-3">
+                        <p id='stat' style="color: #f19f04;">PAYMENT PENDING</p>
+                    </div>
+                    <hr>
+                    <div>
+                        <p>Order Id : {{final_dict.order_id}}</p>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <p><Strong>Please Wait, Your Payment is Pending</strong><br>We are checking for payment status. <br> This page will reload automatically.<br>Thankyou for your patience.</p>
+                    </div>
+                </div>
+
+
+            {% elif final_dict.status == 'SERVER_ERROR'%}
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <img src="{%static 'shop/server.jpg'%}" style="height:10rem;">
+                    </div>
+                    <div class="d-flex justify-content-center mt-3">
+                        <p id='stat' style="color: #f19f04;">SERVER ERROR</p>
+                    </div>
+                    <hr>
+                    <div>
+                        <p>Order Id : {{final_dict.order_id}}</p>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        
+                        <p><Strong>We are sorry for the inconvenience caused </strong><br>You can try again later. Please note down the order id <br> for further referance Contact us on :(0755) - 4253398 <br>Thankyou for your patience.</p>
+                    </div>
+                </div>
+        
+
+            {% else %}
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <!-- <img src="{%static 'shop/failed.jpg'%}" style="height:10rem;"> -->
+                        <svg height="160" width="160">
+                            <circle class="circle" cx="80" cy="80" r="75"  fill="red" stroke="red" stroke-width="10"/>
+                            <line class="cross" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+                            <line class="cross" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+                        </svg>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <p id='stat' style="color: red;">PAYMENT FAILED</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-center">
+                    </div>
+                    <div>
+                        <p class="card-text  ">
+                            
+                            <div>
+                                <p>Transaction Id : {{final_dict.transaction_id}}</p>
+                                <p>Order Id : {{final_dict.order_id}}</p>
+                                <p>Amount Paid : Rs. {{final_dict.amount}} /- </p>
+                            </div>
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <p><Strong>Unfortunatly your payment failed.</strong><br>Please try again after some time.<br>If amount is deducted from your account <br>it will be refunded in 2-3 working days.</p>
+                    </div>
+                </div>
+            
+            {% endif %}   
+        </div>
+        <input id="payment_status" value={{final_dict.status}} hidden>
+    </div>
+</div>
+
+{% block js %}
+<script>
+    var stat = document.getElementById('payment_status').value
+    function reload(){
+        location.reload();
+    };
+    if (stat == 'PAYMENT_PENDING') {
+        setInterval(reload, 5000);
+    }
+    if (stat == 'PAYMENT_SUCCESS'){
+        localStorage.clear();
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+
+{% endblock js %}
+
+
+{% endblock %}
